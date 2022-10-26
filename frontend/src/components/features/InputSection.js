@@ -81,20 +81,22 @@ export default ({
 
   if (!statistics) statistics = defaultStatistics;
 
-  const [vacationText, setVacationText] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
     try {
-      if (vacationText) {
+      if (title && content) {
         setIsLoading(true);
         const data = JSON.stringify({
-          description: vacationText,
+          title,
+          content,
         });
 
         const config = {
           method: 'post',
-          url: `${BASE_URL}/predict`,
+          url: `${BASE_URL}/api/news/predict`,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -102,7 +104,7 @@ export default ({
         };
 
         const result = await axios(config);
-        onComplete(result.data);
+        onComplete(result.data, title);
         setIsLoading(false);
       } else {
       }
@@ -110,6 +112,7 @@ export default ({
       setIsLoading(false);
     }
   };
+
   return (
     <Container>
       <TwoColumn css={!imageInsideDiv && tw`md:items-center`}>
@@ -127,16 +130,18 @@ export default ({
             <Description>{description}</Description>
             <Input
               type="text"
-              placeholder="Add your news header..."
-              onChange={(e) => setVacationText(e.target.value)}
-              value={vacationText}
+              placeholder="Enter news title..."
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              reqired
             />
             <Input
               type="text"
-              placeholder="Describe your news..."
+              placeholder="Enter news content..."
               rows="8"
-              onChange={(e) => setVacationText(e.target.value)}
-              value={vacationText}
+              onChange={(e) => setContent(e.target.value)}
+              value={content}
+              reqired
             />
             <PrimaryButton onClick={handleSubmit}>
               {isLoading ? (
