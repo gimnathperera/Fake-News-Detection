@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "5bf96227-be6f-4a77-acf8-c30e8de38b0c",
+		"name": "Fake-News-Detection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15580341"
+	},
+	"item": [
+		{
+			"name": "POST Get prediction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{$randomJobTitle}}\",\r\n    \"content\": \"{{$randomPhrase}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.1.101:5000/api/news/predict",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"1",
+						"101"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"news",
+						"predict"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Validate news using google news",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://newsapi.org/v2/everything?q=Microsoft %26 Google Q3 2022 Earnings : Vents Contraires Sur La Tech&from=2022-09-26&sortBy=publishedAt&apiKey=2a4606862c51431794bbb185357ab3b0",
+					"protocol": "https",
+					"host": [
+						"newsapi",
+						"org"
+					],
+					"path": [
+						"v2",
+						"everything"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "Microsoft & Google Q3 2022 Earnings : Vents Contraires Sur La Tech"
+						},
+						{
+							"key": "from",
+							"value": "2022-09-26"
+						},
+						{
+							"key": "sortBy",
+							"value": "publishedAt"
+						},
+						{
+							"key": "apiKey",
+							"value": "2a4606862c51431794bbb185357ab3b0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
