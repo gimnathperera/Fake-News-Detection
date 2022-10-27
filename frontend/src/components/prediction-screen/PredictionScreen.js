@@ -20,6 +20,7 @@ const PrimaryButton = tw(
 
 const PredictionScreen = ({ newsHeader, similarity }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [googleNews, setGoogleNews] = useState('');
 
   const handleCheckGoogle = async () => {
     try {
@@ -27,58 +28,61 @@ const PredictionScreen = ({ newsHeader, similarity }) => {
 
       const config = {
         method: 'get',
-        url: `${NEWS_API}/v2/everything?q=${newsHeader}&from=2022-09-26&sortBy=publishedAt&apiKey=${API_KEY}`,
+        url: `${NEWS_API}/v2/everything?q=${newsHeader}&from=2022-09-27&sortBy=publishedAt&apiKey=${API_KEY}`,
       };
 
       const result = await axios(config);
       if (result?.data?.articles.length > 0) {
-        toast.success('Validated by google news');
+        setGoogleNews(result?.data?.articles[0]?.url);
       } else {
-        toast.error('No news found in google');
+        setGoogleNews('News is fake');
       }
 
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
+      toast.error('Network error');
     }
+  };
+
+  const handleRedirection = (link) => {
+    window.open(link, '_blank');
   };
 
   return (
     <Container>
       <Box>
-        {similarity > 0.3 ? (
+        {similarity > 0.6 ? (
           <>
-            <Heading>This is a real news </Heading>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              x="0"
-              y="0"
-              enableBackground="new 0 0 240.608 240.608"
-              version="1.1"
-              viewBox="0 0 240.608 240.608"
-              xmlSpace="preserve"
-            >
-              <path
-                fill="#020202"
-                d="M208.789 29.972l31.819 31.82L91.763 210.637 0 118.876l31.819-31.82 59.944 59.942L208.789 29.972z"
-              ></path>
-            </svg>
+            <Heading>Similarity: {similarity}</Heading>
+            {googleNews && (
+              <p
+                style={{
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'blueviolet',
+                }}
+                onClick={() => handleRedirection(googleNews)}
+              >
+                {googleNews}
+              </p>
+            )}
           </>
         ) : (
           <>
-            <Heading>This is a fake news </Heading>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              x="0"
-              y="0"
-              enableBackground="new 0 0 208.891 208.891"
-              version="1.1"
-              viewBox="0 0 208.891 208.891"
-              xmlSpace="preserve"
-              style={{ padding: 15 }}
-            >
-              <path d="M0 170l65.555-65.555L0 38.891 38.891 0l65.555 65.555L170 0l38.891 38.891-65.555 65.555L208.891 170 170 208.891l-65.555-65.555-65.555 65.555L0 170z"></path>
-            </svg>
+            <Heading>Similarity: {similarity} </Heading>
+            {googleNews && (
+              <p
+                style={{
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  color: 'blueviolet',
+                }}
+                onClick={() => handleRedirection(googleNews)}
+              >
+                {googleNews}
+              </p>
+            )}
           </>
         )}
 

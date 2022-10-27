@@ -116,14 +116,6 @@ export default ({
   return (
     <Container>
       <TwoColumn css={!imageInsideDiv && tw`md:items-center`}>
-        <ImageColumn css={imageContainerCss}>
-          {imageInsideDiv ? (
-            <Image imageSrc={imageSrc} css={imageCss} />
-          ) : (
-            <img src={imageSrc} css={imageCss} alt="" />
-          )}
-          {imageDecoratorBlob && <DecoratorBlob css={imageDecoratorBlobCss} />}
-        </ImageColumn>
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>
             <Heading>{heading}</Heading>
